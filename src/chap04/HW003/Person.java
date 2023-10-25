@@ -1,4 +1,4 @@
-package HW003;
+package chap04.HW003;
 
 class Person {
     private String name;

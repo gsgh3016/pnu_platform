@@ -2,22 +2,22 @@ package chap05.Q04;
 
 public class Rectangle extends Shape{
 
-    private final int a;
-    private final int b;
+    private final int width;
+    private final int height;
 
-    public Rectangle(int a, int b) {
-        this.a = a;
-        this.b = b;
+    public Rectangle(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public float getLength() {
-        return 2 * (a + b);
+        return 2 * (width + height);
     }
 
     @Override
     public float getArea() {
-        return a * b;
+        return width * height;
     }
 
     @Override

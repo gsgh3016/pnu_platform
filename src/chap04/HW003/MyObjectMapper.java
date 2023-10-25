@@ -1,4 +1,4 @@
-package HW003;
+package chap04.HW003;
 
 import java.lang.reflect.*;
 
@@ -10,12 +10,12 @@ public class MyObjectMapper {
     }
 
     public <T> T readValue(String jsonString, Class<T> clazz) throws Exception {
-        // implement your code using Java Reflection
         Constructor<T> constructor = clazz.getDeclaredConstructor();
         var map = this.parser.parse(jsonString);
         T instance = constructor.newInstance();
 
         final Field[] fields = clazz.getDeclaredFields();
+
         for (Field field: fields) {
             field.setAccessible(true);
             Object value = map.get(field.getName());
@@ -27,6 +27,7 @@ public class MyObjectMapper {
                 field.set(instance, Double.parseDouble((String) value));
             }
         }
+
         return instance;
     }
 }

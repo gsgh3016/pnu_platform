@@ -1,9 +1,8 @@
-package HW01;
+package chap02.HW01;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
-import java.lang.Math;
 
 public class MyJsonParser {
     public static void main(String[] args) {

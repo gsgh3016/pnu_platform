@@ -1,4 +1,4 @@
-package HW003;
+package chap04.HW003;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +14,7 @@ public class MyJsonParser {
     public String removeSpace(String json) {
         StringBuilder tokens = new StringBuilder(), token = new StringBuilder();
         boolean insideString = false;
-
-        for (char c : json.toCharArray()) {
+        for (char c: json.toCharArray()) {
             if (c == '\"' && insideString) {
                 token.append(c);
                 insideString = false;
@@ -26,7 +25,7 @@ public class MyJsonParser {
                 }
                 token.append(c);
                 insideString = true;
-            } else if (!insideString && (c == ' ' || c == '{' || c == '}' || c ==  ':' || c== ',')) {
+            } else if (!insideString && (c == ' ' || c == '{' || c == '}' || c == ':' || c == ',')) {
                 if (!token.isEmpty()) {
                     tokens.append(token);
                     token.setLength(0);

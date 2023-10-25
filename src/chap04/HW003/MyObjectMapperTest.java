@@ -1,4 +1,4 @@
-package HW003;
+package chap04.HW003;
 
 public class MyObjectMapperTest {
     public static void main(String[] args) throws Exception {

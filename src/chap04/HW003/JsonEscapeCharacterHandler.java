@@ -1,25 +1,14 @@
-package HW003;
+package chap04.HW003;
 
 import java.util.Optional;
 
-/**
- * Handler for processing JSON escape characters.
- */
 public class JsonEscapeCharacterHandler {
-
-    /**
-     * Handles escape characters in a JSON string and returns the processed string.
-     *
-     * @param str JSON string with escape characters
-     * @return Processed string with escape characters replaced
-     */
     public String handleEscapedCharacters(String str) {
         StringBuilder result = new StringBuilder();
         boolean isEscaping = false;
 
-        for (int i = 0; i < str.length(); i++) {
+        for (int i=0; i<str.length(); i++) {
             char c = str.charAt(i);
-
             if (isEscaping) {
                 result.append(processEscapedCharacter(c, str, i).orElse(c));
                 isEscaping = false;
@@ -29,7 +18,6 @@ public class JsonEscapeCharacterHandler {
                 result.append(c);
             }
         }
-
         return result.toString();
     }
 
