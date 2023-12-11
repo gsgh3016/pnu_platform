@@ -1,42 +1,36 @@
 package chap04.HW003;
 
-import java.util.Optional;
-
 public class JsonEscapeCharacterHandler {
     public String handleEscapedCharacters(String str) {
-        StringBuilder result = new StringBuilder();
-        boolean isEscaping = false;
+        StringBuilder sb = new StringBuilder();
+        boolean isEscape = false;
 
-        for (int i=0; i<str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (isEscaping) {
-                result.append(processEscapedCharacter(c, str, i).orElse(c));
-                isEscaping = false;
+
+            if (isEscape) {
+                switch (c) {
+                    case '"' -> sb.append('"');
+                    case 'b' -> sb.append('\b');
+                    case 'f' -> sb.append('\f');
+                    case 'n' -> sb.append('\n');
+                    case 'r' -> sb.append('\r');
+                    case 't' -> sb.append('\t');
+                    case 'u' -> {
+                        String next = str.substring(i + 1, i + 5);
+                        i += 4;
+                        int ch = Integer.parseInt(next, 16);
+                        sb.append((char) ch);
+                    }
+                }
+                isEscape = false;
             } else if (c == '\\') {
-                isEscaping = true;
+                isEscape = true;
             } else {
-                result.append(c);
+                sb.append(c);
             }
         }
-        return result.toString();
-    }
 
-    private Optional<Character> processEscapedCharacter(char c, String str, int index) {
-        return switch (c) {
-            case 'n' -> Optional.of('\n');
-            case '"' -> Optional.of('"');
-            case 't' -> Optional.of('\t');
-            case 'r' -> Optional.of('\r');
-            case 'b' -> Optional.of('\b');
-            case 'u' -> {
-                if (index + 3 < str.length()) {
-                    String unicodeChar = str.substring(index + 1, index + 5);
-                    yield Optional.of((char) Integer.parseInt(unicodeChar, 16));
-                } else {
-                    yield Optional.empty();
-                }
-            }
-            default -> Optional.empty();
-        };
+        return sb.toString();
     }
 }

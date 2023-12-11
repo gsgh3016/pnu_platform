@@ -1,33 +1,42 @@
 package chap04.HW003;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 public class MyObjectMapper {
-    private MyJsonParser parser;
+    private MyJsonParser myJsonParser;
 
     public MyObjectMapper() {
-        this.parser = new MyJsonParser();
+        this.myJsonParser = new MyJsonParser();
     }
 
     public <T> T readValue(String jsonString, Class<T> clazz) throws Exception {
+        Map<String, Object> map = myJsonParser.parse(jsonString);
         Constructor<T> constructor = clazz.getDeclaredConstructor();
-        var map = this.parser.parse(jsonString);
-        T instance = constructor.newInstance();
+        T t = constructor.newInstance();
 
-        final Field[] fields = clazz.getDeclaredFields();
-
-        for (Field field: fields) {
-            field.setAccessible(true);
-            Object value = map.get(field.getName());
-            if (value.getClass().equals(field.getType())) {
-                field.set(instance, value);
-            } else if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
-                field.set(instance, Integer.parseInt((String) value));
-            } else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
-                field.set(instance, Double.parseDouble((String) value));
+        for (Field field : clazz.getDeclaredFields()) {
+            if (map.containsKey(field.getName())) {
+                field.setAccessible(true);
+                Object value = map.get(field.getName());
+                Object convertedValue = convertValue(value, field.getType());
+                field.set(t, convertedValue);
             }
         }
 
-        return instance;
+        return t;
+    }
+
+    private Object convertValue(Object value, Class<?> type) {
+        if (type.isPrimitive()) {
+            if (type.equals(int.class)) {
+                return Integer.parseInt(value.toString());
+            }
+            if (type.equals(double.class)) {
+                return Double.parseDouble(value.toString());
+            }
+        }
+        return value;
     }
 }
